@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:woo_store/inner_screens/category_inner_screen.dart';
 
 import 'package:woo_store/services/utils.dart';
 import 'package:woo_store/widgets/text_widget.dart';
@@ -16,8 +17,13 @@ class CategoriesWidget extends StatelessWidget {
     final categoryModel = Provider.of<CategoryModel>(context);
     return InkWell(
       onTap: () {
-        // Navigator.pushNamed(context, CategoryScreen.routeName,
-        //     arguments: catText);
+        Navigator.pushNamed(
+          context,
+          CategoryInnerScreen.routeName,
+          arguments: CategoryParameters(
+              categoryId: categoryModel.categoryId,
+              categoryName: categoryModel.categoryName),
+        );
       },
       child: Container(
         // height: _screenWidth * 0.6,
@@ -56,4 +62,14 @@ class CategoriesWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class CategoryParameters {
+  int categoryId;
+  String categoryName;
+
+  CategoryParameters({
+    required this.categoryId,
+    required this.categoryName,
+  });
 }

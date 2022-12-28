@@ -5,4 +5,5 @@ class Config {
   static String tokenUrl = '/wp-json/jwt-auth/v1/token';
   static String customersUrl = '/wp-json/wc/v3/customers';
   static String categoriesUrl = '/wp-json/wc/v3/products/categories';
+  static String productsUrl = "/wp-json/wc/v3/products";
 }

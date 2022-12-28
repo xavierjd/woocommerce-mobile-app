@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:woo_store/screens/bottom_bar_screen.dart';
 import 'package:woo_store/woo_provider/categories_provider.dart';
+import 'package:woo_store/woo_provider/products_provider.dart';
 
 class FetchScreen extends StatefulWidget {
   const FetchScreen({super.key});
@@ -18,7 +19,6 @@ class _FetchScreenState extends State<FetchScreen> {
       final categoriesProvider =
           Provider.of<CategoriesProvider>(context, listen: false);
       await categoriesProvider.fetchCategories();
-      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const BottomBarScreen(),

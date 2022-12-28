@@ -6,6 +6,7 @@ import 'package:woo_store/woocommerce/models/category_model.dart';
 import 'package:woo_store/woocommerce/models/customer_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:woo_store/woocommerce/models/login_model.dart';
+import 'package:woo_store/woocommerce/models/product_model.dart';
 
 class ApiWoocommerce {
   Future listOrders() async {
@@ -113,6 +114,70 @@ class ApiWoocommerce {
       return (jsonData as List)
           .map(
             (index) => CategoryModel.fromJson(index),
+          )
+          .toList();
+    }
+    if (response.statusCode == 403) {
+      throw 'error data';
+    } else {
+      throw 'Falló la conexión con el servidor';
+    }
+  }
+
+  Future<List<ProductModel>> getProducts({
+    int? pageNumber,
+    int? pageSize,
+    String? strSearch,
+    String? tagName,
+    String? categoryId,
+    String? sortBy,
+    String sortOrder = 'asc',
+  }) async {
+    Map<String, dynamic> parameters = {};
+
+    if (strSearch != null) {
+      parameters['search'] = strSearch;
+    }
+    if (pageSize != null) {
+      parameters['per_page'] = pageSize;
+    }
+    if (pageNumber != null) {
+      parameters['page'] = pageNumber;
+    }
+    if (tagName != null) {
+      parameters['tag'] = tagName;
+    }
+    if (categoryId != null) {
+      parameters['category'] = categoryId;
+    }
+    if (sortBy != null) {
+      parameters['orderby'] = sortBy;
+    }
+    parameters['order'] = sortOrder;
+
+    final url = Uri.https(
+      Config.url,
+      Config.productsUrl,
+      parameters,
+    );
+    final authToken = base64.encode(
+      utf8.encode(
+        '${Config.key}:${Config.secret}',
+      ),
+    );
+    final response = await http.get(
+      url,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: 'Basic $authToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      return (jsonData as List)
+          .map(
+            (index) => ProductModel.fromJson(index),
           )
           .toList();
     }

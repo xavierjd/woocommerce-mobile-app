@@ -5,7 +5,7 @@ class CategoryModel with ChangeNotifier {
   String categoryName;
   String categoryDesc;
   int parent;
-  Ima? image;
+  Img? image;
 
   CategoryModel({
     required this.categoryId,
@@ -21,18 +21,18 @@ class CategoryModel with ChangeNotifier {
       categoryName: json['name'],
       categoryDesc: json['description'],
       parent: json['parent'],
-      image: json['image'] == null ? null : Ima.fromJson(json['image']),
+      image: json['image'] == null ? null : Img.fromJson(json['image']),
     );
   }
 }
 
-class Ima with ChangeNotifier {
+class Img with ChangeNotifier {
   String url;
-  Ima({
+  Img({
     required this.url,
   });
 
-  factory Ima.fromJson(Map<String, dynamic> json) {
-    return Ima(url: json['src']);
+  factory Img.fromJson(Map<String, dynamic> json) {
+    return Img(url: json['src']);
   }
 }
