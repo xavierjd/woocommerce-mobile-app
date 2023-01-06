@@ -130,6 +130,7 @@ class ApiWoocommerce {
     String? strSearch,
     String? tagName,
     String? categoryId,
+    List<int>? productsIds,
     String? sortBy,
     String sortOrder = 'asc',
   }) async {
@@ -149,6 +150,9 @@ class ApiWoocommerce {
     }
     if (categoryId != null) {
       parameters['category'] = categoryId;
+    }
+    if (productsIds != null) {
+      parameters['include'] = productsIds.join(",").toString();
     }
     if (sortBy != null) {
       parameters['orderby'] = sortBy;

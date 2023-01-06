@@ -47,7 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = Utils(context).getSizeScreen();
+    Size screenSize = Utils(context).getScreenSize;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pinkAccent,

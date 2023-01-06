@@ -13,7 +13,7 @@ class CategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = Utils(context).getSizeScreen();
+    Size screenSize = Utils(context).getScreenSize;
     final categoryModel = Provider.of<CategoryModel>(context);
     return InkWell(
       onTap: () {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:woo_store/fetch_screen.dart';
 import 'package:woo_store/inner_screens/category_inner_screen.dart';
+import 'package:woo_store/inner_screens/product_details.dart';
 import 'package:woo_store/woo_provider/categories_provider.dart';
 import 'package:woo_store/woo_provider/products_provider.dart';
 
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
         home: const FetchScreen(),
         routes: {
           CategoryInnerScreen.routeName: (context) =>
-              const CategoryInnerScreen()
+              const CategoryInnerScreen(),
+          ProductDetails.routeName: (context) => const ProductDetails(),
         },
       ),
     );

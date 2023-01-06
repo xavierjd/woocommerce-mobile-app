@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    Size screenSize = Utils(context).getSizeScreen();
+    Size screenSize = Utils(context).getScreenSize;
     return Scaffold(
       body: Column(
         children: [

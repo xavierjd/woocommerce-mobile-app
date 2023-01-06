@@ -16,7 +16,7 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
-    Size screenSize = Utils(context).getSizeScreen();
+    Size screenSize = Utils(context).getScreenSize;
     return Scaffold(
       body: SingleChildScrollView(
           child: Column(

@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ProductModel with ChangeNotifier {
@@ -6,12 +9,14 @@ class ProductModel with ChangeNotifier {
   String description;
   String shortDescription;
   String sku;
-  String price;
-  String regularPrice;
-  String salePrice;
+  double price;
+  double regularPrice;
+  double salePrice;
+  bool isOnSale;
   String stockStatus;
   List<Img>? images;
   List<Categories>? categories;
+  List<int> relatedIds;
 
   ProductModel({
     required this.id,
@@ -22,9 +27,11 @@ class ProductModel with ChangeNotifier {
     required this.price,
     required this.regularPrice,
     required this.salePrice,
+    required this.isOnSale,
     required this.stockStatus,
     required this.images,
     required this.categories,
+    required this.relatedIds,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -34,10 +41,16 @@ class ProductModel with ChangeNotifier {
       description: json['description'],
       shortDescription: json['short_description'],
       sku: json['sku'],
-      price: json['price'],
-      regularPrice: json['regular_price'],
-      salePrice: json['sale_price'],
+      price: json['price'] == "" ? 0.0 : double.parse(json['price']),
+      regularPrice: json['regular_price'] == ""
+          ? 0.0
+          : double.parse(json['regular_price']),
+      salePrice: json['sale_price'] == ""
+          ? double.parse(json['regular_price'])
+          : double.parse(json['sale_price']),
+      isOnSale: json['on_sale'],
       stockStatus: json['stock_status'],
+      relatedIds: json['cross_sell_ids'].cast<int>(),
       images: json['images'] != null
           ? List<Img>.from(json['images'].map((index) => Img.fromJson(index)))
           : null,
@@ -46,6 +59,13 @@ class ProductModel with ChangeNotifier {
               json['categories'].map((index) => Categories.fromJson(index)))
           : null,
     );
+  }
+  calcuatedDiscount() {
+    double regularPrice = this.regularPrice;
+    double salePrice = this.salePrice != 0.0 ? this.salePrice : regularPrice;
+    double discount = regularPrice - salePrice;
+    double disPercent = (discount / regularPrice) * 100;
+    return disPercent.round();
   }
 }
 

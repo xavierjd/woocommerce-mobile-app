@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:woo_store/services/utils.dart';
 import 'package:woo_store/widgets/categories_widget.dart';
 import 'package:woo_store/widgets/feed_item_widget.dart';
 import 'package:woo_store/widgets/text_widget.dart';
@@ -16,6 +17,7 @@ class CategoryInnerScreen extends StatefulWidget {
 class _CategoryInnerScreenState extends State<CategoryInnerScreen> {
   @override
   Widget build(BuildContext context) {
+    Size screenSize = Utils(context).getScreenSize;
     final categoryParameters =
         ModalRoute.of(context)!.settings.arguments as CategoryParameters;
     final productsProvider = Provider.of<ProductsProvider>(context);
@@ -35,10 +37,11 @@ class _CategoryInnerScreenState extends State<CategoryInnerScreen> {
               centerTitle: true,
             ),
             body: GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
-              childAspectRatio: 240 / 250,
-              crossAxisSpacing: 10, // Vertical spacing
-              mainAxisSpacing: 10, // Horizontal spacing
+              padding: EdgeInsets.zero,
+              childAspectRatio: screenSize.width / (screenSize.height * 0.52),
               children: List.generate(productsList.length, (index) {
                 return ChangeNotifierProvider.value(
                   value: productsList[index],
