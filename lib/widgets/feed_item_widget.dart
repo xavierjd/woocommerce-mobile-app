@@ -1,12 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:iconly/iconly.dart';
 
 import 'package:provider/provider.dart';
-import 'package:woo_store/inner_screens/product_details.dart';
+import 'package:woo_store/inner_screens/product_details_screen.dart';
 import 'package:woo_store/services/utils.dart';
 import 'package:woo_store/widgets/heart_widget.dart';
 import 'package:woo_store/widgets/price_widget.dart';
@@ -40,7 +38,7 @@ class _FeedItemWidgetState extends State<FeedItemWidget> {
     final productModel = Provider.of<ProductModel>(context);
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, ProductDetails.routeName,
+        Navigator.pushNamed(context, ProductDetailsScreen.routeName,
             arguments: productModel);
       },
       child: Container(

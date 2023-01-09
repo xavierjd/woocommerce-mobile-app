@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:woo_store/services/utils.dart';
+import 'package:woo_store/widgets/appbar_widget.dart';
 import 'package:woo_store/widgets/categories_widget.dart';
 import 'package:woo_store/widgets/feed_item_widget.dart';
 import 'package:woo_store/widgets/text_widget.dart';
@@ -26,15 +27,9 @@ class _CategoryInnerScreenState extends State<CategoryInnerScreen> {
         future: productsProvider.findByCategory(categoryParameters.categoryId),
         builder: (context, snapshot) {
           return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: TextWidget(
-                text: categoryParameters.categoryName,
-                color: Colors.black,
-                textSize: 18,
-              ),
-              centerTitle: true,
+            appBar: AppBarWidget(
+              title: categoryParameters.categoryName,
+              backgroundColor: Colors.pinkAccent,
             ),
             body: GridView.count(
               shrinkWrap: true,

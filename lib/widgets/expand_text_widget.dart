@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:iconly/iconly.dart';
 import 'package:woo_store/widgets/text_widget.dart';
 
 class ExpandTextWidget extends StatefulWidget {
@@ -21,7 +22,7 @@ class _ExpandTextWidgetState extends State<ExpandTextWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(5.0),
+      margin: const EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,15 +45,15 @@ class _ExpandTextWidgetState extends State<ExpandTextWidget> {
           ),
           Align(
             child: GestureDetector(
-              child: TextWidget(
-                text: descTextShowFlag ? 'Show Less' : 'Show More',
-                color: Colors.blue,
-                textSize: 18,
-              ),
+              child: descTextShowFlag
+                  ? const Icon(IconlyLight.arrow_up_2)
+                  : const Icon(IconlyLight.arrow_down_2),
               onTap: () {
-                setState(() {
-                  descTextShowFlag = !descTextShowFlag;
-                });
+                setState(
+                  () {
+                    descTextShowFlag = !descTextShowFlag;
+                  },
+                );
               },
             ),
           )

@@ -35,30 +35,32 @@ class CategoriesWidget extends StatelessWidget {
             width: 2,
           ),
         ),
-        child: Column(children: [
-          // Container for the image
-          Container(
-            height: screenSize.width * 0.3,
-            width: screenSize.width * 0.3,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                  categoryModel.image == null
-                      ? 'https://bitfun.mx/wp-content/uploads/2022/06/cropped-logo3_color.png'
-                      : categoryModel.image!.url,
+        child: Column(
+          children: [
+            // Container for the image
+            Container(
+              height: screenSize.width * 0.3,
+              width: screenSize.width * 0.3,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                    categoryModel.image == null
+                        ? 'https://bitfun.mx/wp-content/uploads/2022/06/cropped-logo3_color.png'
+                        : categoryModel.image!.url,
+                  ),
+                  fit: BoxFit.fill,
                 ),
-                fit: BoxFit.fill,
               ),
             ),
-          ),
-          // Category name
-          TextWidget(
-            text: categoryModel.categoryName,
-            color: Colors.black,
-            textSize: 20,
-            isTitle: true,
-          ),
-        ]),
+            // Category name
+            TextWidget(
+              text: categoryModel.categoryName,
+              color: Colors.black,
+              textSize: 18,
+              isTitle: true,
+            ),
+          ],
+        ),
       ),
     );
   }

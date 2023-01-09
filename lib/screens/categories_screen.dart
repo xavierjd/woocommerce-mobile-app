@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:woo_store/widgets/appbar_widget.dart';
 import 'package:woo_store/widgets/categories_widget.dart';
 
-import 'package:woo_store/widgets/text_widget.dart';
 import 'package:woo_store/woo_provider/categories_provider.dart';
 import 'package:woo_store/woocommerce/models/category_model.dart';
 
@@ -19,16 +19,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     final categoriesProvider = Provider.of<CategoriesProvider>(context);
     List<CategoryModel> allCategories = categoriesProvider.getCategoriesList;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: TextWidget(
-          text: 'Categories',
-          color: Colors.black,
-          textSize: 24,
-          isTitle: true,
-        ),
-      ),
+      appBar: const AppBarWidget(
+          title: 'Categorias', backgroundColor: Colors.pinkAccent),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.count(

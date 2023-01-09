@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:woo_store/widgets/appbar_widget.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarWidget(
-          title: 'Carrito', backgroundColor: Colors.pinkAccent),
+          title: 'Notificaciones', backgroundColor: Colors.pinkAccent),
       body: Column(
         children: const [
           Expanded(
             child: Center(
-              child: Text('Carrito'),
+              child: Text('Notificaciones'),
             ),
           ),
         ],
