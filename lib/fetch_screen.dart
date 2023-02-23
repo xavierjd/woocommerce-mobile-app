@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import 'package:woo_store/screens/bottom_bar_screen.dart';
 import 'package:woo_store/woo_provider/categories_provider.dart';
-import 'package:woo_store/woo_provider/products_provider.dart';
 
 class FetchScreen extends StatefulWidget {
   const FetchScreen({super.key});
@@ -15,7 +14,7 @@ class FetchScreen extends StatefulWidget {
 class _FetchScreenState extends State<FetchScreen> {
   @override
   void initState() {
-    Future.delayed(const Duration(microseconds: 5), () async {
+    Future.delayed(const Duration(microseconds: 1), () async {
       final categoriesProvider =
           Provider.of<CategoriesProvider>(context, listen: false);
       await categoriesProvider.fetchCategories();

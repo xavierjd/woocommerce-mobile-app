@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:woo_store/fetch_screen.dart';
+import 'package:woo_store/screens/bottom_bar_screen.dart';
+import 'package:woo_store/services/shared_services.dart';
 import 'package:woo_store/services/utils.dart';
 import 'package:woo_store/widgets/auth_button_widget.dart';
 import 'package:woo_store/widgets/loading_widget.dart';
@@ -13,6 +15,7 @@ import '../../services/global_methods.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = 'login';
   const LoginScreen({super.key});
 
   @override
@@ -120,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _submitFormOnLogin() async {
+  Future<void> _submitFormOnLogin() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
@@ -134,8 +137,17 @@ class _LoginScreenState extends State<LoginScreen> {
           password: _passTextController.text.trim(),
         );
 
-        print(response.data!.token);
-        print(response.data!.toJson());
+        if (response.success) {
+          //print(response.data!.token);
+          //print(response.data!.toJson());
+          SharedService.setLoginDetails(response);
+
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            BottomBarScreen.routeName,
+            (route) => false,
+          );
+        }
 
         // await authInstance.signInWithEmailAndPassword(
         //   email: _emailTextController.text.toLowerCase().trim(),
@@ -143,11 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // );
 
         // ignore: use_build_context_synchronously
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (contex) => const FetchScreen(),
-          ),
-        );
+
         // } on FirebaseException catch (error) {
         //   GlobalMethods.errorDialog(
         //       subtitle: '${error.message}', context: context);

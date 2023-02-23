@@ -11,12 +11,18 @@ class HeartWidget extends StatefulWidget {
 class _HeartWidgetState extends State<HeartWidget> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: const Icon(
+    return IconButton(
+      icon: const Icon(
         IconlyLight.heart,
-        color: Colors.black,
       ),
+      onPressed: () {},
     );
+    // return GestureDetector(
+    //   onTap: () {},
+    //   child: const Icon(
+    //     IconlyLight.heart,
+    //     color: Colors.black,
+    //   ),
+    // );
   }
 }

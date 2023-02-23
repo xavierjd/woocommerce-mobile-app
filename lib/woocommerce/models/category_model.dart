@@ -15,15 +15,13 @@ class CategoryModel with ChangeNotifier {
     required this.image,
   });
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(
-      categoryId: json['id'],
-      categoryName: json['name'],
-      categoryDesc: json['description'],
-      parent: json['parent'],
-      image: json['image'] == null ? null : Img.fromJson(json['image']),
-    );
-  }
+  factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
+        categoryId: json['id'],
+        categoryName: json['name'],
+        categoryDesc: json['description'],
+        parent: json['parent'],
+        image: json['image'] == null ? null : Img.fromJson(json['image']),
+      );
 }
 
 class Img with ChangeNotifier {
@@ -32,7 +30,5 @@ class Img with ChangeNotifier {
     required this.url,
   });
 
-  factory Img.fromJson(Map<String, dynamic> json) {
-    return Img(url: json['src']);
-  }
+  factory Img.fromJson(Map<String, dynamic> json) => Img(url: json['src']);
 }

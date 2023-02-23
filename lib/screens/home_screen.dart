@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:card_swiper/card_swiper.dart';
 import 'package:woo_store/widgets/appbar_widget.dart';
-import 'package:woo_store/widgets/home_categories_widget.dart';
+import 'package:woo_store/widgets/categories_home_widget.dart';
+import 'package:woo_store/widgets/products_home_widget.dart';
 
 import '../services/utils.dart';
 
@@ -34,7 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: [
             imageSwiper(context),
-            const HomeCategoriesWidget(),
+            const CategoriesHomeWidget(),
+            const ProductsHomeWidget(labelName: 'Best Selling'),
+            const ProductsHomeWidget(labelName: 'Trending'),
           ],
         ),
       ),

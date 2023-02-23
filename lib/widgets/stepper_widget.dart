@@ -44,15 +44,17 @@ class _StepperWidgetState extends State<StepperWidget> {
                 widget.value = widget.value == widget.lowerLimit
                     ? widget.lowerLimit
                     : widget.value -= widget.stepValue;
+
+                widget.onChanged(widget.value);
               });
             },
             icon: const Icon(Icons.remove),
           ),
-          Container(
-            width: 20,
+          SizedBox(
+            width: 24,
             child: Text(
               '${widget.value}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
               textAlign: TextAlign.center,
@@ -65,6 +67,7 @@ class _StepperWidgetState extends State<StepperWidget> {
                     ? widget.upperLimit
                     : widget.value += widget.stepValue;
               });
+              widget.onChanged(widget.value);
             },
             icon: const Icon(Icons.add),
           ),

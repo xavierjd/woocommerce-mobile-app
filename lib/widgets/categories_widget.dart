@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:woo_store/inner_screens/category_inner_screen.dart';
-
+import 'package:woo_store/inner_screens/product_list_screen.dart';
 import 'package:woo_store/services/utils.dart';
 import 'package:woo_store/widgets/text_widget.dart';
 import 'package:woo_store/woocommerce/models/category_model.dart';
@@ -19,10 +18,8 @@ class CategoriesWidget extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(
           context,
-          CategoryInnerScreen.routeName,
-          arguments: CategoryParameters(
-              categoryId: categoryModel.categoryId,
-              categoryName: categoryModel.categoryName),
+          ProductListScreen.routeName,
+          arguments: categoryModel.categoryId,
         );
       },
       child: Container(
@@ -64,14 +61,4 @@ class CategoriesWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-class CategoryParameters {
-  int categoryId;
-  String categoryName;
-
-  CategoryParameters({
-    required this.categoryId,
-    required this.categoryName,
-  });
 }

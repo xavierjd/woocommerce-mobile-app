@@ -44,11 +44,11 @@ class _ExpandTextWidgetState extends State<ExpandTextWidget> {
             },
           ),
           Align(
-            child: GestureDetector(
-              child: descTextShowFlag
+            child: IconButton(
+              icon: descTextShowFlag
                   ? const Icon(IconlyLight.arrow_up_2)
                   : const Icon(IconlyLight.arrow_down_2),
-              onTap: () {
+              onPressed: () {
                 setState(
                   () {
                     descTextShowFlag = !descTextShowFlag;
@@ -56,7 +56,7 @@ class _ExpandTextWidgetState extends State<ExpandTextWidget> {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );

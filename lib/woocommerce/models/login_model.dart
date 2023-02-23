@@ -1,10 +1,10 @@
 // ignore_for_file: unnecessary_new
 
 class LoginResponseModel {
-  bool? success;
-  int? statusCode;
-  String? code;
-  String? message;
+  bool success;
+  int statusCode;
+  String code;
+  String message;
   Data? data;
 
   LoginResponseModel({
@@ -15,36 +15,32 @@ class LoginResponseModel {
     required this.data,
   });
 
-  LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    statusCode = json['statusCode'];
-    code = json['code'];
-    message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
-  }
+  factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
+      LoginResponseModel(
+        success: json['success'],
+        statusCode: json['statusCode'],
+        code: json['code'],
+        message: json['message'],
+        data: json['data'].length > 0 ? Data.fromJson(json['data']) : null,
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> req = {};
-    req['success'] = success;
-    req['statusCode'] = statusCode;
-    req['code'] = code;
-    req['message'] = message;
-
-    if (data != null) {
-      req['data'] = data!.toJson();
-    }
-    return req;
-  }
+  Map<String, dynamic> toJson() => {
+        'success': success,
+        'statusCode': statusCode,
+        'code': code,
+        'message': message,
+        'data': data != null ? data!.toJson() : null
+      };
 }
 
 class Data {
-  String? token;
-  int? id;
-  String? email;
-  String? nicename;
-  String? firstName;
+  String token;
+  int id;
+  String email;
+  String nicename;
+  String firstName;
   String? lastName;
-  String? displayName;
+  String displayName;
 
   Data({
     required this.token,
@@ -56,25 +52,22 @@ class Data {
     required this.displayName,
   });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    id = json['id'];
-    email = json['email'];
-    nicename = json['nicename'];
-    firstName = json['firstName'];
-    displayName = json['displayName'];
-  }
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        token: json['token'],
+        id: json['id'],
+        email: json['email'],
+        nicename: json['nicename'],
+        firstName: json['firstName'],
+        lastName: json['lastName'],
+        displayName: json['displayName'],
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-
-    data['token'] = token;
-    data['id'] = id;
-    data['email'] = email;
-    data['nicename'] = nicename;
-    data['firstName'] = firstName;
-    data['displayName'] = displayName;
-
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        'token': token,
+        'id': id,
+        'email': email,
+        'nicename': nicename,
+        'firstName': firstName,
+        'displayName': displayName,
+      };
 }

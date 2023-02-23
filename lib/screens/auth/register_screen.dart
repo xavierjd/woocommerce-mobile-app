@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:woo_store/fetch_screen.dart';
-import 'package:woo_store/firebase/register_user_firebase.dart';
 import 'package:woo_store/woocommerce/models/customer_model.dart';
-import 'package:woo_store/screens/bottom_bar_screen.dart';
 import 'package:woo_store/services/global_methods.dart';
 
 import 'package:woo_store/services/utils.dart';

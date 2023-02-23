@@ -11,14 +11,14 @@ import 'package:woo_store/widgets/price_widget.dart';
 import 'package:woo_store/widgets/text_widget.dart';
 import 'package:woo_store/woocommerce/models/product_model.dart';
 
-class FeedItemWidget extends StatefulWidget {
-  const FeedItemWidget({super.key});
+class ProductCardWidget extends StatefulWidget {
+  const ProductCardWidget({super.key});
 
   @override
-  State<FeedItemWidget> createState() => _FeedItemWidgetState();
+  State<ProductCardWidget> createState() => _ProductCardWidgetState();
 }
 
-class _FeedItemWidgetState extends State<FeedItemWidget> {
+class _ProductCardWidgetState extends State<ProductCardWidget> {
   final _quantityTextCotroller = TextEditingController();
   @override
   void initState() {
@@ -35,11 +35,11 @@ class _FeedItemWidgetState extends State<FeedItemWidget> {
   @override
   Widget build(BuildContext context) {
     Size sizeScreen = Utils(context).getScreenSize;
-    final productModel = Provider.of<ProductModel>(context);
+    final data = Provider.of<ProductModel>(context);
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, ProductDetailsScreen.routeName,
-            arguments: productModel);
+            arguments: data);
       },
       child: Container(
         decoration: const BoxDecoration(
@@ -64,7 +64,7 @@ class _FeedItemWidgetState extends State<FeedItemWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Visibility(
-                    visible: productModel.calcuatedDiscount() > 0,
+                    visible: data.calcuatedDiscount() > 0,
                     child: Align(
                       alignment: Alignment.bottomLeft,
                       child: Container(
@@ -74,7 +74,7 @@ class _FeedItemWidgetState extends State<FeedItemWidget> {
                           borderRadius: BorderRadius.circular(50),
                         ),
                         child: TextWidget(
-                          text: '${productModel.calcuatedDiscount()}% OFF',
+                          text: '${data.calcuatedDiscount()}% OFF',
                           color: Colors.white,
                           textSize: 15,
                         ),
@@ -85,25 +85,29 @@ class _FeedItemWidgetState extends State<FeedItemWidget> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        // CircleAvatar(
-                        //   radius: 30,
-                        //   backgroundColor: ,
-                        // )
-                        Image.network(
-                          productModel.images!.isNotEmpty
-                              ? productModel.images!.first.src
+                        FancyShimmerImage(
+                          imageUrl: data.images!.isNotEmpty
+                              ? data.images!.first.src
                               : 'https://bitfun.mx/wp-content/uploads/woocommerce-placeholder.png',
                           height: sizeScreen.width * 0.22,
                           width: sizeScreen.width * 0.22,
-                        )
+                          boxFit: BoxFit.fill,
+                        ),
+                        // Image.network(
+                        //   data.images!.isNotEmpty
+                        //       ? data.images!.first.src
+                        //       : 'https://bitfun.mx/wp-content/uploads/woocommerce-placeholder.png',
+                        //   height: sizeScreen.width * 0.22,
+                        //   width: sizeScreen.width * 0.22,
+                        // )
                       ],
                     ),
                   ),
-                  _productTitle(productModel.name),
+                  _productTitle(data.name),
                   _productPrice(
-                    productModel.salePrice,
-                    productModel.regularPrice,
-                    productModel.isOnSale,
+                    data.salePrice,
+                    data.regularPrice,
+                    data.isOnSale,
                   ),
                   //addToCartButton(),
                 ],
@@ -122,12 +126,12 @@ class _FeedItemWidgetState extends State<FeedItemWidget> {
     //       onTap: () {
     //         //viewedProdProvider.addProductToHistory(productID: productsModel.id);
     //         Navigator.pushNamed(context, ProductDetails.routeName,
-    //             arguments: productModel);
+    //             arguments: data);
     //       },
     //       child: Column(
     //         children: [
     //           Visibility(
-    //             visible: productModel.calcuatedDiscount() > 0,
+    //             visible: data.calcuatedDiscount() > 0,
     //             child: Align(
     //               alignment: Alignment.bottomLeft,
     //               child: Container(
@@ -137,7 +141,7 @@ class _FeedItemWidgetState extends State<FeedItemWidget> {
     //                   borderRadius: BorderRadius.circular(50),
     //                 ),
     //                 child: TextWidget(
-    //                   text: '${productModel.calcuatedDiscount()}% OFF',
+    //                   text: '${data.calcuatedDiscount()}% OFF',
     //                   color: Colors.white,
     //                   textSize: 15,
     //                 ),
@@ -145,14 +149,14 @@ class _FeedItemWidgetState extends State<FeedItemWidget> {
     //             ),
     //           ),
     //           FancyShimmerImage(
-    //             imageUrl: productModel.images!.first.src,
+    //             imageUrl: data.images!.first.src,
     //             height: sizeScreen.width * 0.22,
     //             width: sizeScreen.width * 0.22,
     //             boxFit: BoxFit.fill,
     //           ),
-    //           _productTitle(productModel.name),
-    //           _productPrice(productModel.salePrice, productModel.regularPrice,
-    //               productModel.isOnSale),
+    //           _productTitle(data.name),
+    //           _productPrice(data.salePrice, data.regularPrice,
+    //               data.isOnSale),
     //           const Spacer(),
     //           addToCartButton(),
     //         ],
@@ -230,19 +234,20 @@ class _FeedItemWidgetState extends State<FeedItemWidget> {
     return SizedBox(
       //width: double.infinity,
       child: TextButton(
-          onPressed: () {},
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.lightBlue),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50))),
-            ),
+        onPressed: () {},
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.lightBlue),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(50))),
           ),
-          child: Icon(
-            FontAwesomeIcons.cartShopping,
-            color: Colors.white,
-          )),
+        ),
+        child: const Icon(
+          FontAwesomeIcons.cartShopping,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }

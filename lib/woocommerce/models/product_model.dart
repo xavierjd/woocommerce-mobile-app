@@ -11,6 +11,7 @@ class ProductModel with ChangeNotifier {
   double salePrice;
   bool isOnSale;
   String stockStatus;
+  int stockQty;
   List<Img>? images;
   List<Categories>? categories;
   List<int> relatedIds;
@@ -26,37 +27,37 @@ class ProductModel with ChangeNotifier {
     required this.salePrice,
     required this.isOnSale,
     required this.stockStatus,
+    required this.stockQty,
     required this.images,
     required this.categories,
     required this.relatedIds,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
-    return ProductModel(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      shortDescription: json['short_description'],
-      sku: json['sku'],
-      price: json['price'] == "" ? 0.0 : double.parse(json['price']),
-      regularPrice: json['regular_price'] == ""
-          ? 0.0
-          : double.parse(json['regular_price']),
-      salePrice: json['sale_price'] == ""
-          ? double.parse(json['regular_price'])
-          : double.parse(json['sale_price']),
-      isOnSale: json['on_sale'],
-      stockStatus: json['stock_status'],
-      relatedIds: json['cross_sell_ids'].cast<int>(),
-      images: json['images'] != null
-          ? List<Img>.from(json['images'].map((index) => Img.fromJson(index)))
-          : null,
-      categories: json['categories'] != null
-          ? List<Categories>.from(
-              json['categories'].map((index) => Categories.fromJson(index)))
-          : null,
-    );
-  }
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+        id: json['id'],
+        name: json['name'],
+        description: json['description'],
+        shortDescription: json['short_description'],
+        sku: json['sku'],
+        price: json['price'] == "" ? 0.0 : double.parse(json['price']),
+        regularPrice: json['regular_price'] == ""
+            ? 0.0
+            : double.parse(json['regular_price']),
+        salePrice:
+            json['sale_price'] == "" ? 0.0 : double.parse(json['sale_price']),
+        isOnSale: json['on_sale'],
+        stockStatus: json['stock_status'],
+        stockQty: json['stock_quantity'],
+        relatedIds: json['cross_sell_ids'].cast<int>(),
+        images: json['images'] != null
+            ? List<Img>.from(json['images'].map((index) => Img.fromJson(index)))
+            : null,
+        categories: json['categories'] != null
+            ? List<Categories>.from(
+                json['categories'].map((index) => Categories.fromJson(index)))
+            : null,
+      );
+
   calcuatedDiscount() {
     double regularPrice = this.regularPrice;
     double salePrice = this.salePrice != 0.0 ? this.salePrice : regularPrice;
@@ -75,19 +76,15 @@ class Categories with ChangeNotifier {
     required this.name,
   });
 
-  factory Categories.fromJson(Map<String, dynamic> json) {
-    return Categories(
-      id: json['id'],
-      name: json['name'],
-    );
-  }
+  factory Categories.fromJson(Map<String, dynamic> json) => Categories(
+        id: json['id'],
+        name: json['name'],
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['id'] = id;
-    data['name'] = name;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+      };
 }
 
 class Img with ChangeNotifier {
@@ -97,9 +94,7 @@ class Img with ChangeNotifier {
     required this.src,
   });
 
-  factory Img.fromJson(Map<String, dynamic> json) {
-    return Img(
-      src: json['src'],
-    );
-  }
+  factory Img.fromJson(Map<String, dynamic> json) => Img(
+        src: json['src'],
+      );
 }
