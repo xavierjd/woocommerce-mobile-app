@@ -29,11 +29,10 @@ class OrderProvider with ChangeNotifier {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final cartItems = cartProvider.getCartItems;
 
-    Shipping? shipping;
-    if (customerModelDetailsProvider.getCustomerDeatilsModel!.shipping !=
+    if (customerModelDetailsProvider.getCustomerDetailsModel!.shipping !=
         null) {
       _createOrder.shipping =
-          customerModelDetailsProvider.getCustomerDeatilsModel!.shipping;
+          customerModelDetailsProvider.getCustomerDetailsModel!.shipping;
     }
 
     List<LineItems> lineItems = [];
@@ -57,7 +56,7 @@ class OrderProvider with ChangeNotifier {
     }
   }
 
-  fetchOrders() async {
+  void fetchOrders() async {
     List<OrderModel> orderList = await apiWoocommerce.getOrders();
 
     if (orderList.isNotEmpty) {

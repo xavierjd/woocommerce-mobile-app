@@ -83,8 +83,11 @@ class _ProductsHomeWidgetState extends State<ProductsHomeWidget> {
           var data = items[index];
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, ProductDetailsScreen.routeName,
-                  arguments: data);
+              Navigator.pushNamed(
+                context,
+                ProductDetailsScreen.routeName,
+                arguments: data,
+              );
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -131,17 +134,20 @@ class _ProductsHomeWidgetState extends State<ProductsHomeWidget> {
                   alignment: Alignment.centerLeft,
                   child: Row(
                     children: [
-                      Text(
-                        '\$${data.regularPrice}',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          decoration: TextDecoration.lineThrough,
-                          color: Colors.redAccent,
-                          fontWeight: FontWeight.bold,
+                      Visibility(
+                        visible: data.isOnSale,
+                        child: Text(
+                          '\$${data.regularPrice.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            decoration: TextDecoration.lineThrough,
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Text(
-                        ' \$${data.salePrice}',
+                        ' \$${data.price.toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.black,

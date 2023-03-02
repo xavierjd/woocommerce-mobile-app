@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ApiConfig {
   static String key = 'ck_e7a1d4540a8bf3200b30ca509c61260210061850';
   static String secret = 'cs_e723e12187a6862be17690abc7c7bc86b43ad1cc';
@@ -9,8 +11,6 @@ class ApiConfig {
   static String addToCartUrl = "/wp-json/wc/v3/addtocart";
   static String cartUrl = "/wp-json/wc/v3/cart";
   static String orderUrl = "/wp-json/wc/v3/orders";
-  //static String userId = "1";
-
   static String paypalClientID = '';
   static String paypalSecret = '';
   static String paypalUrl = 'api.sandbox.paypal.com'; //for sandbox mode

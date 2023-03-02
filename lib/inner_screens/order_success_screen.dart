@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:woo_store/screens/bottom_bar_screen.dart';
-import 'package:woo_store/screens/home_screen.dart';
 import 'package:woo_store/widgets/loading_widget.dart';
 import 'package:woo_store/widgets/text_widget.dart';
 import 'package:woo_store/woocommerce/provider/order_provider.dart';

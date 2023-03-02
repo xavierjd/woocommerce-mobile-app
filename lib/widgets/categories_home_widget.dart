@@ -69,10 +69,18 @@ class _CategoriesHomeWidgetState extends State<CategoriesHomeWidget> {
           var data = categories[index];
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(
+              // Navigator.pushNamed(
+              //   context,
+              //   ProductListScreen.routeName,
+              //   arguments: data.categoryId,
+              // );
+              Navigator.push(
                 context,
-                ProductListScreen.routeName,
-                arguments: data.categoryId,
+                MaterialPageRoute(
+                  builder: (context) => ProductListScreen(
+                    categoryId: data.categoryId,
+                  ),
+                ),
               );
             },
             child: Column(

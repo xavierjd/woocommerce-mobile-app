@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +11,7 @@ import 'package:woo_store/widgets/stepper_widget.dart';
 import 'package:woo_store/widgets/text_widget.dart';
 import 'package:woo_store/woocommerce/models/cart_request_model.dart';
 import 'package:woo_store/woocommerce/provider/cart_provider.dart';
+import 'package:woo_store/woocommerce/provider/loader_provider.dart';
 
 import '../woocommerce/models/product_model.dart';
 
@@ -27,14 +26,14 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int initQty = 1;
   late int quantity = 1;
-  bool _isLoading = false;
 
   final CarouselController _controller = CarouselController();
   @override
   Widget build(BuildContext context) {
     final data = ModalRoute.of(context)!.settings.arguments as ProductModel;
     final cartProvider = Provider.of<CartProvider>(context);
-    double usedPrice = data.isOnSale ? data.salePrice : data.price;
+
+    final loadingProvider = Provider.of<LoaderProvider>(context);
 
     return Scaffold(
       appBar: const AppBarWidget(
@@ -42,7 +41,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         backgroundColor: Colors.pinkAccent,
       ),
       body: LoadingWidget(
-        isLoading: _isLoading,
+        isLoading: loadingProvider.isApiCallProcess,
         child: SingleChildScrollView(
           child: Container(
             color: Colors.white,
@@ -86,7 +85,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         TextWidget(
-                          text: '\$${usedPrice.toStringAsFixed(2)} MXN',
+                          text: '\$${data.price.toStringAsFixed(2)} MXN',
                           color: Colors.green,
                           textSize: 22,
                           isTitle: true,
@@ -95,13 +94,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           width: 10,
                         ),
                         Visibility(
-                          visible: data.isOnSale ? true : false,
+                          visible: data.isOnSale,
                           child: Text(
-                            '\$${data.salePrice.toStringAsFixed(2)} MXN',
+                            '\$${data.regularPrice.toStringAsFixed(2)} MXN',
                             style: const TextStyle(
-                                fontSize: 15,
-                                color: Colors.black,
-                                decoration: TextDecoration.lineThrough),
+                              fontSize: 15,
+                              color: Colors.red,
+                              decoration: TextDecoration.lineThrough,
+                            ),
                           ),
                         ),
                       ],
@@ -157,7 +157,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   StepperWidget(
                                     lowerLimit: 1,
                                     upperLimit: data.stockQty,
-                                    //upperLimit: 20,
                                     stepValue: 1,
                                     value: initQty,
                                     onChanged: (value) {
@@ -182,18 +181,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       ),
                                     ),
                                     onPressed: () async {
-                                      setState(() {
-                                        _isLoading = true;
-                                      });
+                                      final loadingStatusProvider =
+                                          Provider.of<LoaderProvider>(context,
+                                              listen: false);
+                                      loadingStatusProvider
+                                          .setLoadingStatus(true);
+
                                       await cartProvider.addToCart(
                                         product: CartProducts(
                                           productId: data.id,
                                           quantity: quantity,
                                         ),
                                       );
-                                      setState(() {
-                                        _isLoading = false;
-                                      });
+
+                                      loadingStatusProvider
+                                          .setLoadingStatus(false);
                                     },
                                   ),
                                 ],

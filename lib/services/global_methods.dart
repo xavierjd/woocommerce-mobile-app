@@ -13,32 +13,44 @@ class GlobalMethods {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(title),
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
           content: Text(subtitle),
           actions: [
-            TextButton(
-                onPressed: () {
-                  if (Navigator.canPop(context)) {
-                    Navigator.pop(context);
-                  }
-                },
-                child: TextWidget(
-                  text: 'Cancelar',
-                  color: Colors.cyan,
-                  textSize: 18,
-                )),
-            TextButton(
-              onPressed: () {
-                fct();
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                }
-              },
-              child: TextWidget(
-                text: 'OK',
-                color: Colors.red,
-                textSize: 18,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: TextWidget(
+                    text: 'Cancelar',
+                    color: Colors.black,
+                    textSize: 18,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    fct();
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: TextWidget(
+                    text: 'OK',
+                    color: Colors.red,
+                    textSize: 18,
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -54,19 +66,27 @@ class GlobalMethods {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Ocurrio un error:'),
+          title: const Text(
+            'Error',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
           content: Text(subtitle),
           actions: [
-            TextButton(
-              onPressed: () {
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                }
-              },
-              child: TextWidget(
-                color: Colors.cyan,
-                text: 'Ok',
-                textSize: 18,
+            Center(
+              child: OutlinedButton(
+                onPressed: () {
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  }
+                },
+                child: TextWidget(
+                  color: Colors.black,
+                  text: 'OK',
+                  textSize: 18,
+                ),
               ),
             ),
           ],

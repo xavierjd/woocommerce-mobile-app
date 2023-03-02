@@ -63,9 +63,13 @@ class _StepperWidgetState extends State<StepperWidget> {
           IconButton(
             onPressed: () {
               setState(() {
-                widget.value = widget.value == widget.upperLimit
-                    ? widget.upperLimit
-                    : widget.value += widget.stepValue;
+                if (widget.value == widget.upperLimit) {
+                  widget.value = widget.upperLimit;
+                } else if (widget.value > widget.upperLimit) {
+                  widget.value = widget.value;
+                } else {
+                  widget.value = widget.value += widget.stepValue;
+                }
               });
               widget.onChanged(widget.value);
             },

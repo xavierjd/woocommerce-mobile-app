@@ -1,6 +1,7 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:woo_store/services/global_methods.dart';
 import 'package:woo_store/widgets/stepper_widget.dart';
 import 'package:woo_store/widgets/text_widget.dart';
 import 'package:woo_store/woocommerce/models/cart_reponse_model.dart';
@@ -51,9 +52,21 @@ class CartProductWidget extends StatelessWidget {
                   color: Colors.black,
                   textSize: 15,
                 ),
+                TextWidget(
+                  text: '(exitencias ${data.stockQty})',
+                  color: Colors.red,
+                  textSize: 15,
+                ),
                 TextButton.icon(
                   onPressed: () {
-                    cartProvider.removeItem(productId: data.productId);
+                    GlobalMethods.warningDialog(
+                      title: 'Cart',
+                      subtitle: 'Do you want to delete this item? ',
+                      fct: () {
+                        cartProvider.removeItem(productId: data.productId);
+                      },
+                      context: context,
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.lightBlue,
@@ -69,20 +82,19 @@ class CartProductWidget extends StatelessWidget {
             ),
           ),
           trailing: SizedBox(
-            width: 120,
-            child: StepperWidget(
-              lowerLimit: 1,
-              upperLimit: data.qty,
-              stepValue: 1,
-              value: data.qty,
-              onChanged: (value) {
-                cartProvider.updateQty(
-                  productId: data.productId,
-                  qty: value,
-                );
-              },
-            ),
-          ),
+              width: 120,
+              child: StepperWidget(
+                lowerLimit: 1,
+                upperLimit: data.stockQty,
+                stepValue: 1,
+                value: data.qty,
+                onChanged: (value) {
+                  cartProvider.updateQty(
+                    productId: data.productId,
+                    qty: value,
+                  );
+                },
+              )),
         ),
       ),
     );

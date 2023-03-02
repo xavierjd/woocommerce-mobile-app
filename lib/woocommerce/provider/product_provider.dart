@@ -50,7 +50,7 @@ class ProductProvider with ChangeNotifier {
     int? pageNumber,
     String? strSearch,
     String? tagName,
-    String? categoryId,
+    int? categoryId,
     String? sortBy,
     String sortOrder = 'asc',
   }) async {

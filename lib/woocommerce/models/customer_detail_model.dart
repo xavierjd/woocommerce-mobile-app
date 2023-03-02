@@ -1,7 +1,12 @@
+import 'package:collection/collection.dart';
+
 class CustomerDetailsModel {
   int id;
   String firstName;
   String lastName;
+  String email;
+  String avatarUrl;
+  Meta profilePicture;
   Billing? billing;
   Shipping? shipping;
 
@@ -9,6 +14,9 @@ class CustomerDetailsModel {
     required this.id,
     required this.firstName,
     required this.lastName,
+    required this.email,
+    required this.avatarUrl,
+    required this.profilePicture,
     required this.billing,
     required this.shipping,
   });
@@ -18,6 +26,11 @@ class CustomerDetailsModel {
         id: json['id'],
         firstName: json['first_name'],
         lastName: json['last_name'],
+        email: json['email'],
+        avatarUrl: json['avatar_url'],
+        profilePicture: List<Meta>.from(
+                json["meta_data"].map((element) => Meta.fromJson(element)))
+            .firstWhere((element) => element.key == 'bf_profile_picture'),
         billing:
             json['billing'] != null ? Billing.fromJson(json['billing']) : null,
         shipping: json['shipping'] != null
@@ -128,4 +141,19 @@ class Shipping {
         'country': country,
         'state': state,
       };
+}
+
+class Meta {
+  String key;
+  dynamic value;
+
+  Meta({
+    required this.key,
+    required this.value,
+  });
+
+  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
+        key: json['key'],
+        value: json['value'],
+      );
 }

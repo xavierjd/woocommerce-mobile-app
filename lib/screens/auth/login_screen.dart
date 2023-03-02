@@ -138,10 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         if (response.success) {
-          //print(response.data!.token);
-          //print(response.data!.toJson());
           SharedService.setLoginDetails(response);
-
+          //SharedService.setCutomerDetails()
           Navigator.pushNamedAndRemoveUntil(
             context,
             BottomBarScreen.routeName,

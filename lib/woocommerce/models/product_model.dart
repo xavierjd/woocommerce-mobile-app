@@ -6,10 +6,11 @@ class ProductModel with ChangeNotifier {
   String description;
   String shortDescription;
   String sku;
+  bool isOnSale;
   double price;
   double regularPrice;
   double salePrice;
-  bool isOnSale;
+
   String stockStatus;
   int stockQty;
   List<Img>? images;
@@ -22,10 +23,10 @@ class ProductModel with ChangeNotifier {
     required this.description,
     required this.shortDescription,
     required this.sku,
+    required this.isOnSale,
     required this.price,
     required this.regularPrice,
     required this.salePrice,
-    required this.isOnSale,
     required this.stockStatus,
     required this.stockQty,
     required this.images,
@@ -39,13 +40,12 @@ class ProductModel with ChangeNotifier {
         description: json['description'],
         shortDescription: json['short_description'],
         sku: json['sku'],
-        price: json['price'] == "" ? 0.0 : double.parse(json['price']),
-        regularPrice: json['regular_price'] == ""
-            ? 0.0
-            : double.parse(json['regular_price']),
-        salePrice:
-            json['sale_price'] == "" ? 0.0 : double.parse(json['sale_price']),
         isOnSale: json['on_sale'],
+        price: double.parse(json['price']),
+        regularPrice: double.parse(json['regular_price']),
+        salePrice: json['on_sale'] == true
+            ? double.parse(json['sale_price'])
+            : double.parse(json['regular_price']),
         stockStatus: json['stock_status'],
         stockQty: json['stock_quantity'],
         relatedIds: json['cross_sell_ids'].cast<int>(),

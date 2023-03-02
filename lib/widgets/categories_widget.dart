@@ -16,10 +16,18 @@ class CategoriesWidget extends StatelessWidget {
     final categoryModel = Provider.of<CategoryModel>(context);
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(
+        // Navigator.pushNamed(
+        //   context,
+        //   ProductListScreen.routeName,
+        //   arguments: categoryModel.categoryId,
+        // );
+        Navigator.push(
           context,
-          ProductListScreen.routeName,
-          arguments: categoryModel.categoryId,
+          MaterialPageRoute(
+            builder: (context) => ProductListScreen(
+              categoryId: categoryModel.categoryId,
+            ),
+          ),
         );
       },
       child: Container(

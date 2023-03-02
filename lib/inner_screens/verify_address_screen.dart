@@ -45,7 +45,7 @@ class _VerifyAddressScreenState extends State<VerifyAddressScreen> {
   Widget build(BuildContext context) {
     final customerDetailsProvider =
         Provider.of<CustomerDetailsProvider>(context);
-    final customerModel = customerDetailsProvider.getCustomerDeatilsModel;
+    final customerModel = customerDetailsProvider.getCustomerDetailsModel;
 
     return Scaffold(
       appBar: const AppBarWidget(

@@ -1,36 +1,35 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:woo_store/services/shared_services.dart';
+
 import 'package:woo_store/woocommerce/api_config.dart';
 import 'package:woo_store/woocommerce/models/cart_reponse_model.dart';
 import 'package:woo_store/woocommerce/models/cart_request_model.dart';
 import 'package:woo_store/woocommerce/models/category_model.dart';
 import 'package:woo_store/woocommerce/models/customer_detail_model.dart';
 import 'package:woo_store/woocommerce/models/customer_model.dart';
-import 'package:http/http.dart' as http;
 import 'package:woo_store/woocommerce/models/login_model.dart';
 import 'package:woo_store/woocommerce/models/order_details_model.dart';
 import 'package:woo_store/woocommerce/models/order_model.dart';
 import 'package:woo_store/woocommerce/models/product_model.dart';
 
 class ApiWoocommerce {
-  Future<void> createCustomer(CustomerModel customer) async {
+  Future<void> createCustomer(
+    CustomerModel customerModel,
+  ) async {
     final url = Uri.https(
       ApiConfig.url,
       ApiConfig.customersUrl,
     );
-    final authToken = base64.encode(
-      utf8.encode(
-        '${ApiConfig.key}:${ApiConfig.secret}',
-      ),
-    );
+    final authToken =
+        base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
     final response = await http.post(
       url,
       headers: {
         HttpHeaders.authorizationHeader: 'Basic $authToken',
       },
-      body: jsonEncode(customer.toJson()),
+      body: jsonEncode(customerModel.toJson()),
     );
     if (response.statusCode == 400) {
       throw 'Este correo electrónico ya está registrado 😕';
@@ -70,16 +69,23 @@ class ApiWoocommerce {
     }
   }
 
-  Future<List<CategoryModel>> getCategories() async {
+  Future<List<CategoryModel>> getCategories({
+    String order = 'desc',
+    bool hideEmpty = true,
+    String orderby = 'count',
+  }) async {
+    Map<String, dynamic> parameters = {};
+    parameters['order'] = order;
+    parameters['hide_empty'] = hideEmpty.toString();
+    parameters['orderby'] = orderby;
+
     final url = Uri.https(
       ApiConfig.url,
       ApiConfig.categoriesUrl,
+      parameters,
     );
-    final authToken = base64.encode(
-      utf8.encode(
-        '${ApiConfig.key}:${ApiConfig.secret}',
-      ),
-    );
+    final authToken =
+        base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
     final response = await http.get(
       url,
       headers: {
@@ -108,7 +114,7 @@ class ApiWoocommerce {
     int? pageSize,
     String? strSearch,
     String? tagName,
-    String? categoryId,
+    int? categoryId,
     List<int>? productsIds,
     bool? featured,
     String? sortBy,
@@ -149,11 +155,8 @@ class ApiWoocommerce {
       ApiConfig.productsUrl,
       parameters,
     );
-    final authToken = base64.encode(
-      utf8.encode(
-        '${ApiConfig.key}:${ApiConfig.secret}',
-      ),
-    );
+    final authToken =
+        base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
     final response = await http.get(
       url,
       headers: {
@@ -178,44 +181,46 @@ class ApiWoocommerce {
   }
 
   Future<CartResponseModel> addToCart({
-    required CartRequestModel model,
+    required List<CartProducts> productsList,
   }) async {
-    //model.userId = int.parse(ApiConfig.userId);
-
     LoginResponseModel? loginResponseModel = await SharedService.loginDetails();
     if (loginResponseModel != null) {
-      model.userId = loginResponseModel.data!.id;
-    }
+      final requestModel = CartRequestModel(
+        userId: loginResponseModel.data!.id,
+        products: productsList,
+      );
 
-    final authToken =
-        base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
-    final url = Uri.https(
-      ApiConfig.url,
-      ApiConfig.addToCartUrl,
-    );
-    final encoded = jsonEncode(model);
-    final response = await http.post(
-      url,
-      headers: {
-        HttpHeaders.authorizationHeader: 'Basic $authToken',
-        HttpHeaders.contentTypeHeader: 'application/json'
-      },
-      body: encoded,
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      return CartResponseModel.fromJson(jsonData);
-    }
-    if (response.statusCode == 400) {
-      throw response.statusCode;
+      final url = Uri.https(
+        ApiConfig.url,
+        ApiConfig.addToCartUrl,
+      );
+      final encoded = jsonEncode(requestModel);
+      final authToken =
+          base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
+      final response = await http.post(
+        url,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Basic $authToken',
+          HttpHeaders.contentTypeHeader: 'application/json'
+        },
+        body: encoded,
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        return CartResponseModel.fromJson(jsonData);
+      }
+      if (response.statusCode == 400) {
+        throw response.statusCode;
+      } else {
+        throw 'Falló la conexión con el servidor';
+      }
     } else {
-      throw 'Falló la conexión con el servidor';
+      throw 'You must sign-in to access to this section';
     }
   }
 
   Future<CartResponseModel> getCartItems() async {
     LoginResponseModel? loginResponseModel = await SharedService.loginDetails();
-
     if (loginResponseModel != null) {
       int userId = loginResponseModel.data!.id;
 
@@ -224,10 +229,8 @@ class ApiWoocommerce {
         ApiConfig.cartUrl,
         {'user_id': userId.toString()},
       );
-
       final authToken =
           base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
-
       final response = await http.get(
         url,
         headers: {
@@ -245,7 +248,7 @@ class ApiWoocommerce {
         throw 'Falló la conexión con el servidor';
       }
     } else {
-      throw 'Falló la conexión con el servidor';
+      throw 'You must sign-in to access to this section';
     }
   }
 
@@ -254,12 +257,12 @@ class ApiWoocommerce {
     if (loginResponseModel != null) {
       int userId = loginResponseModel.data!.id;
 
-      final authToken =
-          base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
       final url = Uri.https(
         ApiConfig.url,
-        '${ApiConfig.customersUrl}/${userId.toString()}',
+        '${ApiConfig.customersUrl}/$userId',
       );
+      final authToken =
+          base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
       final response = await http.get(
         url,
         headers: {
@@ -277,35 +280,30 @@ class ApiWoocommerce {
         throw 'Falló la conexión con el servidor';
       }
     } else {
-      throw 'Falló la conexión con el servidor';
+      throw 'You must sign-in to access to this section';
     }
   }
 
-  Future<bool> createOrder(CreateOrderModel model) async {
-    //model.customerId = int.parse(ApiConfig.userId);
-
-    bool isOrderCreated = false;
-
+  Future<bool> createOrder(
+    CreateOrderModel orderModel,
+  ) async {
     final url = Uri.https(
       ApiConfig.url,
       ApiConfig.orderUrl,
     );
-    final authToken = base64.encode(
-      utf8.encode(
-        '${ApiConfig.key}:${ApiConfig.secret}',
-      ),
-    );
+    final authToken =
+        base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
     final response = await http.post(
       url,
       headers: {
         HttpHeaders.authorizationHeader: 'Basic $authToken',
         HttpHeaders.contentTypeHeader: 'application/json',
       },
-      body: jsonEncode(model.toJson()),
+      body: jsonEncode(orderModel.toJson()),
     );
 
     if (response.statusCode == 201) {
-      return isOrderCreated = true;
+      return true;
     }
     if (response.statusCode == 400) {
       throw response.statusCode;
@@ -315,30 +313,34 @@ class ApiWoocommerce {
   }
 
   Future<List<OrderModel>> getOrders() async {
-    final url = Uri.https(
-      ApiConfig.url,
-      ApiConfig.orderUrl,
-    );
-
-    final authToken =
-        base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
-
-    final response = await http.get(
-      url,
-      headers: {
-        HttpHeaders.authorizationHeader: 'Basic $authToken',
-        HttpHeaders.contentTypeHeader: 'application/json',
-      },
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      return (jsonData as List).map((e) => OrderModel.fromJson(e)).toList();
-      //return CustomerDetailsModel.fromJson(jsonData);
-    }
-    if (response.statusCode == 400) {
-      throw response.statusCode;
+    LoginResponseModel? loginResponseModel = await SharedService.loginDetails();
+    if (loginResponseModel != null) {
+      int userId = loginResponseModel.data!.id;
+      final url = Uri.https(
+        ApiConfig.url,
+        ApiConfig.orderUrl,
+        {'customer': userId.toString()},
+      );
+      final authToken =
+          base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));
+      final response = await http.get(
+        url,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Basic $authToken',
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        return (jsonData as List).map((e) => OrderModel.fromJson(e)).toList();
+      }
+      if (response.statusCode == 400) {
+        throw response.statusCode;
+      } else {
+        throw 'Falló la conexión con el servidor';
+      }
     } else {
-      throw 'Falló la conexión con el servidor';
+      throw 'You must sign-in to access to this section';
     }
   }
 
@@ -347,7 +349,7 @@ class ApiWoocommerce {
   }) async {
     final url = Uri.https(
       ApiConfig.url,
-      '${ApiConfig.orderUrl}/${orderId.toString()}',
+      '${ApiConfig.orderUrl}/$orderId',
     );
     final authToken =
         base64.encode(utf8.encode('${ApiConfig.key}:${ApiConfig.secret}'));

@@ -11,10 +11,10 @@ import 'package:woo_store/inner_screens/verify_address_screen.dart';
 import 'package:woo_store/screens/auth/login_screen.dart';
 import 'package:woo_store/screens/auth/orders_screen.dart';
 import 'package:woo_store/screens/bottom_bar_screen.dart';
-import 'package:woo_store/screens/home_screen.dart';
 import 'package:woo_store/woo_provider/categories_provider.dart';
 import 'package:woo_store/woocommerce/provider/cart_provider.dart';
 import 'package:woo_store/woocommerce/provider/customer_details_provider.dart';
+import 'package:woo_store/woocommerce/provider/loader_provider.dart';
 import 'package:woo_store/woocommerce/provider/order_provider.dart';
 import 'package:woo_store/woocommerce/provider/product_provider.dart';
 
@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
         ChangeNotifierProvider(create: (_) => CustomerDetailsProvider()),
+        ChangeNotifierProvider(create: (_) => LoaderProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         routes: {
           BottomBarScreen.routeName: (context) => const BottomBarScreen(),
           LoginScreen.routeName: (context) => const LoginScreen(),
-          ProductListScreen.routeName: (context) => const ProductListScreen(),
+          // ProductListScreen.routeName: (context) => const ProductListScreen(),
           ProductDetailsScreen.routeName: (context) =>
               const ProductDetailsScreen(),
           PaymentScreen.routeName: (context) => const PaymentScreen(),

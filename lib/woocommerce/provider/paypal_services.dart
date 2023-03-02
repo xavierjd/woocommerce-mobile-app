@@ -34,7 +34,6 @@ class PaypalServices {
           HttpHeaders.authorizationHeader: 'Basic $authToken',
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
         },
-        //body: 'grant_type=client_credentials',
       );
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
@@ -64,7 +63,7 @@ class PaypalServices {
       items.add({
         'name': item.productName,
         'quantity': item.qty,
-        'price': item.productRegularPrice,
+        'price': item.productPrice,
         'currency': defaultCurrency['currency'],
       });
     }

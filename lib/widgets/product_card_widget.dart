@@ -93,19 +93,12 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                           width: sizeScreen.width * 0.22,
                           boxFit: BoxFit.fill,
                         ),
-                        // Image.network(
-                        //   data.images!.isNotEmpty
-                        //       ? data.images!.first.src
-                        //       : 'https://bitfun.mx/wp-content/uploads/woocommerce-placeholder.png',
-                        //   height: sizeScreen.width * 0.22,
-                        //   width: sizeScreen.width * 0.22,
-                        // )
                       ],
                     ),
                   ),
                   _productTitle(data.name),
                   _productPrice(
-                    data.salePrice,
+                    data.price,
                     data.regularPrice,
                     data.isOnSale,
                   ),
@@ -117,53 +110,6 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
         ),
       ),
     );
-    // return Padding(
-    //   padding: const EdgeInsets.all(8.0),
-    //   child: Material(
-    //     borderRadius: BorderRadius.circular(12),
-    //     color: Theme.of(context).cardColor,
-    //     child: InkWell(
-    //       onTap: () {
-    //         //viewedProdProvider.addProductToHistory(productID: productsModel.id);
-    //         Navigator.pushNamed(context, ProductDetails.routeName,
-    //             arguments: data);
-    //       },
-    //       child: Column(
-    //         children: [
-    //           Visibility(
-    //             visible: data.calcuatedDiscount() > 0,
-    //             child: Align(
-    //               alignment: Alignment.bottomLeft,
-    //               child: Container(
-    //                 padding: const EdgeInsets.all(5),
-    //                 decoration: BoxDecoration(
-    //                   color: Colors.green,
-    //                   borderRadius: BorderRadius.circular(50),
-    //                 ),
-    //                 child: TextWidget(
-    //                   text: '${data.calcuatedDiscount()}% OFF',
-    //                   color: Colors.white,
-    //                   textSize: 15,
-    //                 ),
-    //               ),
-    //             ),
-    //           ),
-    //           FancyShimmerImage(
-    //             imageUrl: data.images!.first.src,
-    //             height: sizeScreen.width * 0.22,
-    //             width: sizeScreen.width * 0.22,
-    //             boxFit: BoxFit.fill,
-    //           ),
-    //           _productTitle(data.name),
-    //           _productPrice(data.salePrice, data.regularPrice,
-    //               data.isOnSale),
-    //           const Spacer(),
-    //           addToCartButton(),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   Widget _productTitle(String title) {
@@ -195,18 +141,39 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          PriceWidget(
-            salePrice: salePrice,
-            price: regularPrice,
-            textPrice: _quantityTextCotroller.text,
-            isOnSale: isOnSale,
+          Visibility(
+            visible: isOnSale,
+            child: Text(
+              '\$${regularPrice.toStringAsFixed(2)}',
+              style: const TextStyle(
+                fontSize: 18,
+                decoration: TextDecoration.lineThrough,
+                color: Colors.redAccent,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-          const SizedBox(
-            width: 8,
-          ),
-          addCurrency(),
+
+          Text(
+            ' \$${salePrice.toStringAsFixed(2)}',
+            style: const TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+          // PriceWidget(
+          //   salePrice: salePrice,
+          //   price: regularPrice,
+          //   textPrice: _quantityTextCotroller.text,
+          //   isOnSale: isOnSale,
+          // ),
+          // const SizedBox(
+          //   width: 8,
+          // ),
+          // addCurrency(),
         ],
       ),
     );

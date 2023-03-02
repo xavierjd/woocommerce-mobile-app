@@ -19,18 +19,13 @@ class CartProvider with ChangeNotifier {
   Future<void> addToCart({
     required CartProducts product,
   }) async {
-    List<CartProducts> productList = [];
+    List<CartProducts> productsList = [];
 
     if (_cartItems.isEmpty) {
-      productList.add(product);
-
-      final requestModel = CartRequestModel(
-        userId: 1,
-        products: productList,
-      );
+      productsList.add(product);
 
       final cartResponseModel =
-          await apiWoocommerce.addToCart(model: requestModel);
+          await apiWoocommerce.addToCart(productsList: productsList);
       if (cartResponseModel.data != null) {
         _cartItems.clear();
         _cartItems.addAll(cartResponseModel.data!);
@@ -38,30 +33,26 @@ class CartProvider with ChangeNotifier {
       }
     } else {
       for (var element in _cartItems) {
-        productList.add(
+        productsList.add(
           CartProducts(
             productId: element.productId,
             quantity: element.qty,
           ),
         );
       }
-      var requestModel = CartRequestModel(
-        userId: 1,
-        products: productList,
-      );
 
-      final isProductExist = requestModel.products!.firstWhereOrNull(
+      final isProductExist = productsList.firstWhereOrNull(
         (element) => element.productId == product.productId,
       );
 
       if (isProductExist != null) {
-        requestModel.products!.remove(isProductExist);
+        productsList.remove(isProductExist);
       }
 
-      requestModel.products!.add(product);
+      productsList.add(product);
 
       final cartResponseModel =
-          await apiWoocommerce.addToCart(model: requestModel);
+          await apiWoocommerce.addToCart(productsList: productsList);
       if (cartResponseModel.data != null) {
         _cartItems.clear();
         _cartItems.addAll(cartResponseModel.data!);
@@ -97,22 +88,18 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> updateCart() async {
-    List<CartProducts> productList = [];
+    List<CartProducts> productsList = [];
     for (var element in _cartItems) {
-      productList.add(
+      productsList.add(
         CartProducts(
           productId: element.productId,
           quantity: element.qty,
         ),
       );
     }
-
-    var requestModel = CartRequestModel(
-      userId: 1,
-      products: productList,
+    final cartResponseModel = await apiWoocommerce.addToCart(
+      productsList: productsList,
     );
-    final cartResponseModel =
-        await apiWoocommerce.addToCart(model: requestModel);
     if (cartResponseModel.data != null) {
       _cartItems.clear();
       _cartItems.addAll(cartResponseModel.data!);
@@ -120,9 +107,11 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  void removeItem({required int productId}) {
+  void removeItem({
+    required int productId,
+  }) {
     if (_cartItems.isNotEmpty) {
-      var isProductExist = _cartItems
+      final isProductExist = _cartItems
           .firstWhereOrNull((element) => element.productId == productId);
       if (isProductExist != null) {
         _cartItems.remove(isProductExist);

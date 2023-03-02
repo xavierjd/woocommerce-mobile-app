@@ -9,8 +9,12 @@ import 'package:woo_store/woocommerce/models/product_model.dart';
 import 'package:woo_store/woocommerce/provider/product_provider.dart';
 
 class ProductListScreen extends StatefulWidget {
-  static const routeName = "/ProductListScreen";
-  const ProductListScreen({super.key});
+  const ProductListScreen({
+    super.key,
+    required this.categoryId,
+  });
+
+  final int categoryId;
 
   @override
   State<ProductListScreen> createState() => _ProductListScreenState();
@@ -42,7 +46,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
       final productList = Provider.of<ProductProvider>(context, listen: false);
       productList.clearProductList();
       productList.setLoadingState(LoadMoreStatus.initial);
-      productList.fetchProducts(pageNumber: _page);
+      productList.fetchProducts(
+        categoryId: widget.categoryId,
+        pageNumber: _page,
+      );
     });
 
     _scrollController.addListener(_onMaxScroll);
@@ -84,7 +91,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final categoryId = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
       appBar: const AppBarWidget(
         title: 'products',

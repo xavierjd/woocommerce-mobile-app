@@ -71,34 +71,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  // Widget _homeHeader({required Size screenSize}) {
-  //   return Container(
-  //     height: screenSize.height / 8,
-  //     width: screenSize.width,
-  //     color: Colors.pinkAccent,
-  //     alignment: Alignment.center,
-  //     padding: EdgeInsets.all(screenSize.width / 20),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         const CircleAvatar(
-  //           backgroundColor: Color(0xFFD6D6D6),
-  //           child: Icon(
-  //             FontAwesomeIcons.user,
-  //             color: Colors.white,
-  //           ),
-  //         ),
-  //         const SizedBox(
-  //           width: 18,
-  //         ),
-  //         TextWidget(
-  //           text: '!Bienvendio!',
-  //           color: Colors.white,
-  //           textSize: 20,
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
